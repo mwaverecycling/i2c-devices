@@ -8,8 +8,8 @@ BUILD_DIR = ./build
 OBJ_DIR = $(BUILD_DIR)/objects
 TARGET = $(BUILD_DIR)/libi2cdevices
 
-SOURCES = $(wildcard $(SRC_DIR)/*.c)
-HEADERS = $(wildcard $(INC_DIR)/*.h)
+SOURCES = $(shell find $(SRC_DIR) -type f -name *.c)
+HEADERS = $(shell find $(SRC_DIR) -type f -name *.h)
 OBJECTS = $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SOURCES))
 
 INC_FLAGS = -I$(SRC_DIR) -I$(INC_DIR)
@@ -27,6 +27,10 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 
 run: build
 	$(TARGET)
+
+info:
+	@echo $(SOURCES)
+	@echo $(OBJECTS)
 
 clean:
 	rm -rf $(OBJ_DIR)
