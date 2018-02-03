@@ -1,3 +1,4 @@
+#include <i2cfunc.h>
 
 
 #ifndef PCA9555
@@ -11,21 +12,22 @@
 #define PCA9555_REGISTER_POLARITY 0x04
 #define PCA9555_REGISTER_CONFIGURE 0x06
 
-void pca9555_read_input(int adapter, int address, char data[2]);
+
+tI2C_Status pca9555_read_input(int adapter, int address, char data[2]);
 int pca9555_read_pin(int adapter, int address, int pin);
 
-void pca9555_write_output(int adapter, int address, char data[2]);
-void pca9555_write_pin(int adapter, int address, int pin, int value);
+tI2C_Status pca9555_write_output(int adapter, int address, char data[2]);
+tI2C_Status pca9555_write_pin(int adapter, int address, int pin, int value);
 
 //void pca9555_write_polarity(int address);
 //void pca9555_read_polarity(int address, int pin);
 
-void pca9555_config_read(int adapter, int address, char data[2]);
-void pca9555_config_write(int adapter, int address, char data[2]);
+tI2C_Status pca9555_config_read(int adapter, int address, char data[2]);
+tI2C_Status pca9555_config_write(int adapter, int address, char data[2]);
 
 /** Configures pins [start_pin, end_pin) as output, and the rest as input */
-void pca9555_config_output_range(int adapter, int address, int start_pin, int end_pin);
+tI2C_Status pca9555_config_output_range(int adapter, int address, int start_pin, int end_pin);
 /** Configures pins [start_pin, end_pin) as intput, and the rest as output */
-void pca9555_config_intput_range(int adapter, int address, int start_pin, int end_pin);
+tI2C_Status pca9555_config_input_range(int adapter, int address, int start_pin, int end_pin);
 
 #endif

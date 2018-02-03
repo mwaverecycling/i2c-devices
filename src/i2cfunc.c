@@ -49,7 +49,7 @@ void _i2c_set_addr(int adapter, int addr)
 
 
 
-int i2c_write(int adapter, int address, unsigned char* buffer, unsigned int length)
+tI2C_Status i2c_write(int adapter, int address, unsigned char* buffer, unsigned int length)
 {
     _i2c_set_addr(adapter, address);
 
@@ -61,7 +61,7 @@ int i2c_write(int adapter, int address, unsigned char* buffer, unsigned int leng
     return length;
 }
 
-int i2c_read(int adapter, int address, unsigned char* buffer, unsigned int length)
+tI2C_Status i2c_read(int adapter, int address, unsigned char* buffer, unsigned int length)
 {
     _i2c_set_addr(adapter, address);
 
