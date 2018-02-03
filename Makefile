@@ -9,7 +9,7 @@ INC_DIR_HACK = ./hack_include
 TEST_DIR = ./test
 
 SO_NAME = i2cdevices
-LIB_NAME = lib$(SO_NAME).so
+LIB_NAME = lib$(SO_NAME)
 
 BUILD_DIR = ./build
 OBJ_DIR = $(BUILD_DIR)/objects
@@ -35,10 +35,14 @@ endif
 build: $(OBJECTS) $(HEADERS)
 	@echo $(OBJECTS)
 
+lib_shared: build
+	$(CC) -shared -fpic -Wl,-soname,$(LIB_NAME).so -o $(TARGET_LIB).so $(OBJECTS)
 lib: build
-	$(CC) -shared -fpic -Wl,-soname,$(LIB_NAME) -o $(TARGET_LIB) $(OBJECTS)
+	ar rcs $(TARGET_LIB).a $(OBJECTS)
 
 build_test: lib
+	$(CC) -o $(TARGET_TEST) $(TESTFILE) $(TARGET_LIB).a
+build_test_shared: lib_shared
 	$(CC) -o $(TARGET_TEST) $(TESTFILE) -l$(SO_NAME)
 	
 
@@ -49,12 +53,16 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 
 test: build_test
 	$(TARGET_TEST)
+test_shared: build_test_shared
+	export LD_LIBRARY_PATH=$(INSTALL_LIB_LOC)
+	$(TARGET_TEST)
 
 install: lib
-	cp $(TARGET_LIB) $(INSTALL_LIB_LOC)
+install_shared: lib
+	cp $(TARGET_LIB).* $(INSTALL_LIB_LOC)
 	cp -rt $(INSTALL_INC_LOC) $(wildcard $(INC_DIR)/*)
 uninstall:
-	rm -f $(INSTALL_LIB_LOC)/$(LIB_NAME)
+	rm -f $(INSTALL_LIB_LOC)/$(LIB_NAME).*
 	rm -f $(patsubst $(INC_DIR)/%, $(INSTALL_INC_LOC)/%, $(HEADERS))
 	rm -fd $(INSTALL_INC_LOC)/$(shell ls -d $(INC_DIR)/*/ | cut -d"/" -f3-)
 
@@ -65,6 +73,6 @@ info:
 
 clean:
 	rm -rf $(OBJ_DIR)
-	rm -f $(TARGET_LIB)
+	rm -f $(TARGET_LIB).*
 	rm -f $(TARGET_TEST)
 
