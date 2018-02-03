@@ -10,12 +10,12 @@
 int main(int argc, char const *argv[])
 {
 	printf("Initializing...\n");
-	i2c_init();
+	int i2cd = i2c_init();
 	printf("Running...\n");
 
 	char cmd_output[2] = { MASK(1, 0, 1, 0, 0, 0, 1, 1), MASK(0, 0, 1, 0, 0, 0, 0, 1) };
-	pca9555_config_output_range(IO_ADDRESS, 0, 16);
-	pca9555_write_output(IO_ADDRESS, cmd_output);
+	pca9555_config_output_range(i2cd, IO_ADDRESS, 0, 16);
+	pca9555_write_output(i2cd, IO_ADDRESS, cmd_output);
 
 	i2c_close();
 	printf("Disconneted.\n");

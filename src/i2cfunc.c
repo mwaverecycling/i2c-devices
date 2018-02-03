@@ -11,33 +11,34 @@
 
 
 char* i2c_file = "/dev/i2c-2";
-int i2c_adapter;
 int curr_reg;
 
 
-void i2c_init()
+int i2c_init()
 {
-    i2c_adapter = open(i2c_file, O_RDWR);
-    if(i2c_adapter < 0)
+    int fd = open(i2c_file, O_RDWR);
+    if(fd < 0)
     {
         perror("i2c_init error:");
         exit(1);
     }
+    return fd;
 }
-void i2c_init_file(char* filename)
+int i2c_init_file(char* filename)
 {
-    i2c_adapter = open(filename, O_RDWR);
-    if(i2c_adapter < 0)
+    int fd = open(filename, O_RDWR);
+    if(fd < 0)
     {
         perror("i2c_init error:");
         exit(1);
     }
+    return fd;
 }
 
-void _i2c_set_addr(int addr)
+void _i2c_set_addr(int adapter, int addr)
 {
     if(addr != curr_reg) {
-        if(ioctl(i2c_adapter, I2C_SLAVE, addr) < 0) {
+        if(ioctl(adapter, I2C_SLAVE, addr) < 0) {
             perror("_i2c_change_reg error:");
             curr_reg = -1;
         } else {
@@ -48,11 +49,11 @@ void _i2c_set_addr(int addr)
 
 
 
-int i2c_write(int address, unsigned char* buffer, unsigned int length)
+int i2c_write(int adapter, int address, unsigned char* buffer, unsigned int length)
 {
-    _i2c_set_addr(address);
+    _i2c_set_addr(adapter, address);
 
-    if(write(i2c_adapter, buffer, length) != length)
+    if(write(adapter, buffer, length) != length)
     {
         perror("i2c_write error:");
         return -1;
@@ -60,11 +61,11 @@ int i2c_write(int address, unsigned char* buffer, unsigned int length)
     return length;
 }
 
-int i2c_read(int address, unsigned char* buffer, unsigned int length)
+int i2c_read(int adapter, int address, unsigned char* buffer, unsigned int length)
 {
-    _i2c_set_addr(address);
+    _i2c_set_addr(adapter, address);
 
-    if(read(i2c_adapter, buffer, length) != length)
+    if(read(adapter, buffer, length) != length)
     {
         perror("i2c_read error:");
         return -1;
@@ -72,9 +73,11 @@ int i2c_read(int address, unsigned char* buffer, unsigned int length)
     return length;
 }
 
-int i2c_close()
+
+
+int i2c_close(int adapter)
 {
-    if ((close(i2c_adapter)) != 0)
+    if ((close(adapter)) != 0)
     {
         perror("i2c_close error:");
         return -1;
