@@ -13,17 +13,17 @@
 #define PCA9555_REGISTER_CONFIGURE 0x06
 
 
-tI2C_Status pca9555_read_input(int adapter, int address, char data[2]);
+tI2C_Status pca9555_read_input(int adapter, int address, unsigned char data[2]);
 int pca9555_read_pin(int adapter, int address, int pin);
 
-tI2C_Status pca9555_write_output(int adapter, int address, char data[2]);
+tI2C_Status pca9555_write_output(int adapter, int address, unsigned char data[2]);
 tI2C_Status pca9555_write_pin(int adapter, int address, int pin, int value);
 
 //void pca9555_write_polarity(int address);
 //void pca9555_read_polarity(int address, int pin);
 
-tI2C_Status pca9555_config_read(int adapter, int address, char data[2]);
-tI2C_Status pca9555_config_write(int adapter, int address, char data[2]);
+tI2C_Status pca9555_config_read(int adapter, int address, unsigned char data[2]);
+tI2C_Status pca9555_config_write(int adapter, int address, unsigned char data[2]);
 
 /** Configures pins [start_pin, end_pin) as output, and the rest as input */
 tI2C_Status pca9555_config_output_range(int adapter, int address, int start_pin, int end_pin);
