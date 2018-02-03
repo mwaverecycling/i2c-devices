@@ -17,6 +17,6 @@ int main(int argc, char const *argv[])
 	pca9555_config_output_range(i2cd, IO_ADDRESS, 0, 16);
 	pca9555_write_output(i2cd, IO_ADDRESS, cmd_output);
 
-	i2c_close();
-	printf("Disconneted.\n");
+	int status = i2c_close(i2cd);
+	printf("Disconneted. %d\n", status);
 }
