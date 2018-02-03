@@ -33,14 +33,33 @@ void pca9555_write_pin(int address, int pin, int value)
 //void pca9555_write_polarity(int address);
 //void pca9555_read_polarity(int address, int pin);
 
-void pca9555_read_config(int address, char data[2])
+void pca9555_config_read(int address, char data[2])
 {
 	static char read_cmd[1] = { PCA9555_REGISTER_CONFIGURE };
 	i2c_write(address, read_cmd, 1);
 	i2c_read(address, data, 2);
 }
-void pca9555_write_config(int address, char data[2])
+void pca9555_config_write(int address, char data[2])
 {
 	char cmd_buf[3] = { PCA9555_REGISTER_CONFIGURE, data[0], data[1] };
 	i2c_write(address, cmd_buf, 3);
+}
+
+/** Configures pins [start_pin, end_pin) as output, and the rest as input */
+void pca9555_config_output_range(int address, int start_pin, int end_pin)
+{
+	char data[2] = { 0xff, 0xff };
+	for(int pin = start_pin; pin < end_pin; pin++) {
+		data[pin >= 8] &= ~(1 << (pin % 8));
+	}
+	pca9555_config_write(address, data);
+}
+/** Configures pins [start_pin, end_pin) as intput, and the rest as output */
+void pca9555_config_intput_range(int address, int start_pin, int end_pin)
+{
+	char data[2] = { 0x00, 0x00 };
+	for(int pin = start_pin; pin < end_pin; pin++) {
+		data[pin >= 8] |= (1 << (pin % 8));
+	}
+	pca9555_config_write(address, data);
 }
