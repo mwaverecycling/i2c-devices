@@ -58,7 +58,6 @@ test_shared: build_test_shared
 	$(TARGET_TEST)
 
 install: lib
-install_shared: lib
 	cp $(TARGET_LIB).* $(INSTALL_LIB_LOC)
 	cp -rt $(INSTALL_INC_LOC) $(wildcard $(INC_DIR)/*)
 uninstall:
