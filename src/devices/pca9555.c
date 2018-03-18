@@ -19,17 +19,25 @@ tI2C_Status pca9555_write_output(int adapter, int address, unsigned char data[2]
 	unsigned char cmd_buf[3] = { PCA9555_REGISTER_OUTPUT, data[0], data[1] };
 	return i2c_write(adapter, address, cmd_buf, 3);
 }
+tI2C_Status pca9555_write_output_range(int adapter, int address, int start_pin, int end_pin, unsigned char *values)
+{
+	unsigned char data[2];
+	tI2C_Status status = pca9555_read_input(adapter, address, data);
+	if(status != 2) { return status; }
+
+	int pin_index = 0;
+	for(int pin = start_pin; pin < end_pin; pin++, pin_index++) {
+		if(values[pin_index >> 3] & (1 << (pin_index & 0b111)) > 0) {
+			data[pin >> 3] |= (1 << (pin & 0b111));
+		} else {
+			data[pin >> 3] &= ~(1 << (pin & 0b111));
+		}
+	}
+	return pca9555_write_output(adapter, address, data);
+}
 tI2C_Status pca9555_write_pin(int adapter, int address, int pin, int value)
 {
-	unsigned char buffer[2];
-	tI2C_Status status = pca9555_read_input(adapter, address, buffer);
-	if(status != 2) { return status; }
-	if(value) {
-		buffer[pin >= 8] |= (1 << (pin % 8));
-	} else {
-		buffer[pin >= 8] &= ~(1 << (pin % 8));
-	}
-	return status;
+	return pca9555_write_output_range(adapter, address, pin, pin + 1, (unsigned char[1]){ value & 0x1 });
 }
 
 //void pca9555_write_polarity(int address);

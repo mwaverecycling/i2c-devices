@@ -17,6 +17,7 @@ tI2C_Status pca9555_read_input(int adapter, int address, unsigned char data[2]);
 int pca9555_read_pin(int adapter, int address, int pin);
 
 tI2C_Status pca9555_write_output(int adapter, int address, unsigned char data[2]);
+tI2C_Status pca9555_write_output_range(int adapter, int address, int start_pin, int end_pin, unsigned char *values);
 tI2C_Status pca9555_write_pin(int adapter, int address, int pin, int value);
 
 //void pca9555_write_polarity(int address);
