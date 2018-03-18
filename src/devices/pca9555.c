@@ -29,7 +29,7 @@ tI2C_Status pca9555_write_output_range(int adapter, int address, int start_pin, 
 
 	printf("  RANGE: %x%x -> ", data[0] & 0xff, data[1] & 0xff);
 	for(int pin = start_pin; pin < end_pin; pin++) {
-		if(values[(pin - start_pin) >> 3] & (1 << ((pin - start_pin) & 0b111)) > 0) {
+		if((values[(pin - start_pin) >> 3] & (1 << ((pin - start_pin) & 0b111))) > 0) {
 			data[pin >> 3] |= (1 << (pin & 0b111));
 		} else {
 			data[pin >> 3] &= ~(1 << (pin & 0b111));
