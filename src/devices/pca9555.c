@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 #include <i2cfunc.h>
 #include <devices/pca9555.h>
 
@@ -25,14 +27,15 @@ tI2C_Status pca9555_write_output_range(int adapter, int address, int start_pin, 
 	tI2C_Status status = pca9555_read_input(adapter, address, data);
 	if(status != 2) { return status; }
 
-	int pin_index = 0;
-	for(int pin = start_pin; pin < end_pin; pin++, pin_index++) {
-		if(values[pin_index >> 3] & (1 << (pin_index & 0b111)) > 0) {
+	printf("  RANGE: %x%x -> ", data[0] & 0xff, data[1] & 0xff);
+	for(int pin = start_pin; pin < end_pin; pin++) {
+		if(values[(pin - start_pin) >> 3] & (1 << ((pin - start_pin) & 0b111)) > 0) {
 			data[pin >> 3] |= (1 << (pin & 0b111));
 		} else {
 			data[pin >> 3] &= ~(1 << (pin & 0b111));
 		}
 	}
+	printf("%x%x\n", data[0] & 0xff, data[1] & 0xff);
 	return pca9555_write_output(adapter, address, data);
 }
 tI2C_Status pca9555_write_pin(int adapter, int address, int pin, int value)
