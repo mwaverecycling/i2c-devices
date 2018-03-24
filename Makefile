@@ -65,6 +65,9 @@ uninstall:
 	rm -f $(patsubst $(INC_DIR)/%, $(INSTALL_INC_LOC)/%, $(HEADERS))
 	rm -fd $(INSTALL_INC_LOC)/$(shell ls -d $(INC_DIR)/*/ | cut -d"/" -f3-)
 
+reinstall: clean uninstall
+	$(MAKE) install
+
 info:
 	@echo $(SOURCES)
 	@echo $(OBJECTS)
