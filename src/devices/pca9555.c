@@ -64,7 +64,7 @@ tI2C_Status pca9555_config_output_range(int adapter, int address, int start_pin,
 	return pca9555_config_write(adapter, address, data);
 }
 /** Configures pins [start_pin, end_pin) as intput, and the rest as output */
-tI2C_Status pca9555_config_intut_range(int adapter, int address, int start_pin, int end_pin)
+tI2C_Status pca9555_config_input_range(int adapter, int address, int start_pin, int end_pin)
 {
 	char unsigned data[2] = { 0x00, 0x00 };
 	for(int pin = start_pin; pin < end_pin; pin++) {
