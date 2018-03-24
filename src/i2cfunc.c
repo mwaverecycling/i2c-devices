@@ -10,8 +10,8 @@
 
 
 
-char* i2c_file = "/dev/i2c-2";
-int curr_reg;
+static char* i2c_file = "/dev/i2c-2";
+static int curr_reg;
 
 int i2c_init_file(char* filename) { return open(filename, O_RDWR); }
 int i2c_init() { return i2c_init_file(i2c_file); }
