@@ -1,8 +1,8 @@
 #include <i2cfunc.h>
 
 
-#ifndef PCA9555
-#define PCA9555
+#ifndef PCA9555_H
+#define PCA9555_H
 
 #define PCA9555_PIN_OUTPUT 0
 #define PCA9555_PIN_INPUT 1

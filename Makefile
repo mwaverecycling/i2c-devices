@@ -78,3 +78,20 @@ clean:
 	rm -f $(TARGET_LIB).*
 	rm -f $(TARGET_TEST)
 
+
+
+add:
+ifdef device
+	echo "#include <i2cfunc.h>\n\n#ifndef $(shell echo $(device) | tr a-z A-Z)_H\n#define $(shell echo $(device) | tr a-z A-Z)_H\n\n\n\n#endif" > $(INC_DIR)/devices/$(device).h
+	echo "#include <i2cfunc.h>\n#include <devices/$(device).h>\n\n" > $(SRC_DIR)/devices/$(device).c
+else
+	@echo "No component specified!"
+endif
+
+remove:
+ifdef device
+	rm -f $(INC_DIR)/devices/$(device).h
+	rm -f $(SRC_DIR)/devices/$(device).c
+else
+	@echo "No component specified!"
+endif
