@@ -3,6 +3,7 @@
 
 #include <i2cfunc.h>
 #include <devices/pca9555.h>
+#include <devices/ads1115.h>
 
 
 #define MASK(a,b,c,d,e,f,g,h) ((unsigned char)0 | (a) | (b << 1) | (c << 2) | (d << 3) | (e << 4) | (f << 5) | (g << 6) | (h << 7))
@@ -29,6 +30,6 @@ int main(int argc, char const *argv[])
 		printf("  Success! %f V => %f C\n", voltage, temp);
 	}
 
-	int status = i2c_close(i2cd);
+	status = i2c_close(i2cd);
 	printf("Disconneted. %d\n", status);
 }
