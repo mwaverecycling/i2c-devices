@@ -10,11 +10,15 @@
 
 
 
-static char* i2c_file = "/dev/i2c-2";
 static int curr_reg;
 
-int i2c_init_file(char* filename) { return open(filename, O_RDWR); }
-int i2c_init() { return i2c_init_file(i2c_file); }
+int i2c_init_file(const char* filename) { return open(filename, O_RDWR); }
+int i2c_init(int adapter_number)
+{
+    char adapter_file[13];
+    sprintf(adapter_file, "/dev/i2c-%d", adapter_number);
+    return i2c_init_file(adapter_file);
+}
 
 void _i2c_set_addr(int adapter, int addr)
 {

@@ -3,10 +3,10 @@
 
 typedef int tI2C_Status;
 
-// Initialize I2C Adapter, using default file /dev/i2c-2
-int i2c_init();
+// Initialize I2C Adapter
+int i2c_init(int adapter_number);
 // Initialize I2C Adapter, using custom adapter file
-int i2c_init_file(char*);
+int i2c_init_file(const char*);
  
 // These functions return -1 on error, otherwise return the number of bytes read/written.
 // To perform a 'repeated start' use the i2c_write_read function which can write some
